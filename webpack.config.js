@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 module.exports = {
   mode: "development",
   entry: "./src/javascripts/main.js",
@@ -10,11 +11,14 @@ module.exports = {
     path: path.resolve(__dirname, "dist")
   },
   devtool: "eval-source-map",
+  devServer: {
+    static: path.resolve(__dirname, 'src'),
+  },
   module: {
     rules: [
         {
-            test: /\.css$/,
-            use: [MiniCssExtractPlugin.loader, "css-loader"]
+            test: /\.(css|scss|sass)$/,
+            use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
         },
         {
             test: /\.(png|jpe?g|gif|svg)$/,
@@ -26,7 +30,6 @@ module.exports = {
         {
             test: /\.pug/,
             use: [
-
             {
               loader: 'pug-loader',
               options: {
@@ -37,17 +40,17 @@ module.exports = {
         }
     ],
   },
-    plugins: [
-        new MiniCssExtractPlugin(
-            {
-                filename: './stylesheets/main.css'
-            }
-        ),
-        new HtmlWebpackPlugin({
-            template: './src/templates/index.pug',
-        }),
-        new CleanWebpackPlugin(),
-    ]
+  plugins: [
+    new MiniCssExtractPlugin(
+        {
+            filename: './stylesheets/main.css'
+        }
+    ),
+    new HtmlWebpackPlugin({
+        template: './src/templates/index.pug',
+    }),
+    new CleanWebpackPlugin(),
+  ]
 };
 
 
