@@ -16,6 +16,25 @@ module.exports = {
             test: /\.css$/,
             use: [MiniCssExtractPlugin.loader, "css-loader"]
         },
+        {
+            test: /\.(png|jpe?g|gif|svg)$/,
+            type: 'asset/resource',
+            generator: {
+                filename: 'images/[name][ext]'
+            }
+        },
+        {
+            test: /\.pug/,
+            use: [
+
+            {
+              loader: 'pug-loader',
+              options: {
+                pretty: true  
+              }
+            },
+          ],
+        }
     ],
   },
     plugins: [
@@ -25,7 +44,7 @@ module.exports = {
             }
         ),
         new HtmlWebpackPlugin({
-            template: './src/templates/index.html',
+            template: './src/templates/index.pug',
         }),
         new CleanWebpackPlugin(),
     ]
