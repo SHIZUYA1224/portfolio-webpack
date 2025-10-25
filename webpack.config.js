@@ -2,6 +2,8 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');  // 修正: デストラクチャリングでインポート
+
 
 module.exports = {
   mode: "development",
@@ -10,47 +12,93 @@ module.exports = {
     filename: "javascripts/main.js",
     path: path.resolve(__dirname, "dist")
   },
-  devtool: "eval-source-map",
+  devtool: "source-map",
   devServer: {
     static: path.resolve(__dirname, 'src'),
   },
   module: {
     rules: [
-        {
-            test: /\.(css|scss|sass)$/,
-            use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+      {
+        test: /\.vue$/,
+        exclude: /node_modules/,
+        use:  [
+          {
+            loader: 'vue-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { targets: '> 0.25%, not dead' }],
+              '@babel/preset-react'
+            ],
+          },
         },
-        {
-            test: /\.(png|jpe?g|gif|svg)$/,
-            type: 'asset/resource',
-            generator: {
-                filename: 'images/[name][ext]'
-            }
-        },
-        {
-            test: /\.pug/,
-            use: [
+      },
+      {
+          test: /\.(css|scss|sass)$/,
+          use: [
+            MiniCssExtractPlugin.loader,
             {
-              loader: 'pug-loader',
+              loader: "css-loader",
               options: {
-                pretty: true  
+                sourceMap: false,
               }
             },
-          ],
+            {
+              loader: "sass-loader",
+              options: {
+                sourceMap: true
+              }
+            }
+          ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/,
+        use: [
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+          },
+        },
+        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext]'
         }
+      },
+      {
+          test: /\.pug/,
+          use: [
+          {
+            loader: 'pug-loader',
+            options: {
+              pretty: true  
+            }
+          },
+        ],
+      },
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin(
-        {
-            filename: './stylesheets/main.css'
-        }
-    ),
-    new HtmlWebpackPlugin({
-        template: './src/templates/index.pug',
-    }),
-    new CleanWebpackPlugin(),
-  ]
+  new VueLoaderPlugin(),
+  new MiniCssExtractPlugin({
+    filename: './stylesheets/main.css'
+  }),
+  new HtmlWebpackPlugin({
+    template: './src/templates/index.pug',
+  }),
+  new CleanWebpackPlugin(),
+],
 };
 
 

@@ -5,22 +5,32 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "dev": "webpack serve --mode development --open"
-    
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "start": "webpack-dev-server --open"
   },
   "author": "Shizuya Kubota",
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.4",
+    "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.9.4",
     "pug-loader": "^2.4.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "sass": "^1.93.2",
     "sass-loader": "^16.0.6",
     "style-loader": "^4.0.0",
+    "vue": "^3.5.22",
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16",
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
