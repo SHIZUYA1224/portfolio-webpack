@@ -2,7 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');  // 修正: デストラクチャリングでインポート
+
 
 
 module.exports = {
@@ -19,11 +19,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.vue$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use:  [
+        use: [
           {
-            loader: 'vue-loader',
+            loader: 'ts-loader',
           },
         ],
       },
@@ -90,7 +90,7 @@ module.exports = {
     ],
   },
   plugins: [
-  new VueLoaderPlugin(),
+  
   new MiniCssExtractPlugin({
     filename: './stylesheets/main.css'
   }),
